@@ -41,11 +41,21 @@ export default function Main(props) {
           <div className="profile__info">
             <div className="profile__info-heading">
               <h1 className="profile__name">{userName}</h1>
-              <button type="button" className="profile__edit-button" aria-label="Редактировать профиль" onClick={props.onEditProfile} />
+              <button
+                  type="button"
+                  className="profile__edit-button"
+                  aria-label="Редактировать профиль"
+                  onClick={props.onEditProfile}
+              />
             </div>
             <p className="profile__caption">{userDescription}</p>
           </div>
-          <button type="button" className="profile__add-button" aria-label="Добавить карточку" onClick={props.onAddPlace} />
+          <button
+              type="button"
+              className="profile__add-button"
+              aria-label="Добавить карточку"
+              onClick={props.onAddPlace}
+          />
         </section>
         <section className="elements">
           {cards.map((item) => (

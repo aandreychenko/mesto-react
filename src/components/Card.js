@@ -5,7 +5,12 @@ export default function Card(props) {
 
   return (
     <article className="element" key={props.card._id}>
-      <img className="element__image" src={props.card.link} alt="Фотография места" onClick={handleImageClick} />
+      <img
+          className="element__image"
+          src={props.card.link}
+          alt="Фотография места"
+          onClick={handleImageClick}
+      />
       <div className="element__info">
         <h2 className="element__place-name">{props.card.name}</h2>
         <div className="element__like-block">
