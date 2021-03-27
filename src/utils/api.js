@@ -72,7 +72,7 @@ class Api {
     }
 
   /* Avatar */
-  changeUserImage(data) {
+  setUserAvatar(data) {
     return fetch(`${this._url}/${this._groupId}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
@@ -86,20 +86,12 @@ class Api {
 
   /* L I K E   R E Q U E S T S */
 
-  putLike(data) {
-    return fetch(`${this._url}/${this._groupId}/cards/likes/${data._id}`, {
-      method: "PUT",
+  changeLikeCardStatus(id, status) {
+    return fetch(`${this._url}/${this._groupId}/cards/likes/${id}`, {
+      method: status ? "PUT" : "DELETE",
       headers: this._headers
     })
-      .then(this._checkResponse);
-  }
-
-  deleteLike(data) {
-    return fetch(`${this._url}/${this._groupId}/cards/likes/${data._id}`, {
-      method: "DELETE",
-      headers: this._headers
-    })
-      .then(this._checkResponse);
+        .then(this._checkResponse);
   }
 }
 

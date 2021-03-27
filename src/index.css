@@ -37,6 +37,7 @@
 @import url(./blocks/element/__like-counter/element__like-counter.css);
 @import url(./blocks/element/__like-button/_active/element__like-button_active.css);
 @import url(./blocks/element/__trash-button/element__trash-button.css);
+@import url(./blocks/element/__trash-button/_visible/element__trash-button_visible.css);
 
 /* Блок footer */
 @import url(./blocks/footer/footer.css);

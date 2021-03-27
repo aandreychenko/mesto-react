@@ -1,46 +1,25 @@
 import React from "react";
-import api from "../utils/api"
 import Card from "./Card"
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function Main(props) {
-
-  let [{name: userName, about: userDescription, avatar: userAvatar}, setProfile] = React.useState({name:'', about:'', avatar: ''});
-
-  React.useEffect(() => {
-    api.getUserInfo()
-        .then((res) => {
-          setProfile(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-  }, [])
-
-  let [cards, setCards] = React.useState([]);
-
-  React.useEffect(() => {
-    api.getCards()
-        .then((res) => {
-          setCards(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-  }, [])
-
+  /* Image opening handler */
   const mainCardImage = (data) => {
     props.onOpenImage && props.onOpenImage(data);
   }
+
+  /* Subscribing on user context */
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
       <main className="main">
         <section className="profile">
           <button className="profile__avatar-container" onClick={props.onEditAvatar}>
-            <img className="profile__avatar" alt="Фотография профиля" src={userAvatar} />
+            <img className="profile__avatar" alt="Фотография профиля" src={currentUser.avatar} />
           </button>
           <div className="profile__info">
             <div className="profile__info-heading">
-              <h1 className="profile__name">{userName}</h1>
+              <h1 className="profile__name">{currentUser.name}</h1>
               <button
                   type="button"
                   className="profile__edit-button"
@@ -48,7 +27,7 @@ export default function Main(props) {
                   onClick={props.onEditProfile}
               />
             </div>
-            <p className="profile__caption">{userDescription}</p>
+            <p className="profile__caption">{currentUser.about}</p>
           </div>
           <button
               type="button"
@@ -58,8 +37,14 @@ export default function Main(props) {
           />
         </section>
         <section className="elements">
-          {cards.map((item) => (
-            <Card card={item} key={item._id} handleCardImage={mainCardImage} />
+          {props.cards.map((item) => (
+            <Card
+                card={item}
+                key={item._id}
+                handleCardImage={mainCardImage}
+                onCardLike={props.onCardLike}
+                onCardDelete={props.onCardDelete}
+            />
           ))}
         </section>
       </main>
