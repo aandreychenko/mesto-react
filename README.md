@@ -12,4 +12,4 @@ Planned:
 - Доработка функционала
 
 Страница проекта на GitHub
-https://aandreychenko.github.io/mesto/
+https://aandreychenko.github.io/mesto-react/
