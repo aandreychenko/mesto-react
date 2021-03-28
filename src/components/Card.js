@@ -16,6 +16,9 @@ export default function Card(props) {
   /* Checking which cards we liked */
   const isLiked = props.card.likes.some(i => i._id === currentUser._id);
 
+  /* Likes counter */
+  const likesAmount = props.card.likes.length;
+
   /* Trash button appearance handler */
   const cardDeleteButtonClassName = (
       `element__trash-button ${isOwn && 'element__trash-button_visible'}`
@@ -48,7 +51,7 @@ export default function Card(props) {
         <h2 className="element__place-name">{props.card.name}</h2>
         <div className="element__like-block">
           <button type="button" className={cardLikeButtonClassName} onClick={handleLikeClick} />
-          <p className="element__like-counter">0</p>
+          <p className="element__like-counter">{likesAmount}</p>
         </div>
       </div>
       <button type="button" className={cardDeleteButtonClassName} onClick={handleDeleteClick} />
