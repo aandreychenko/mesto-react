@@ -58,6 +58,3 @@ export default function Card(props) {
     </article>
   )
 }
-
-/*<button type="button" className="element__like-button"></button>*/
-/*<button type="button" className='element__trash-button'></button>*/

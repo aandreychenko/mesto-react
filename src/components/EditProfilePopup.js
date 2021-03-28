@@ -20,8 +20,8 @@ export default function EditProfilePopup(props) {
 
   /* Setting context based states */
   React.useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
+    setName(currentUser.name || '');
+    setDescription(currentUser.about || '');
   }, [currentUser]);
 
   /* Submit handler */

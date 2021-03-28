@@ -43,7 +43,7 @@ export default function App() {
   }
 
   /* User setting functionality */
-  let [currentUser, setCurrentUser] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState('');
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -59,26 +59,26 @@ export default function App() {
     api.changeUserInfo({name, about})
         .then((res) => {
           setCurrentUser(res);
+          closeAllPopups();
         })
         .catch((err) => {
           console.log(err);
         });
-    closeAllPopups();
   }
 
   const handleUpdateAvatar = ({link}) => {
     api.setUserAvatar({link})
         .then((res) => {
           setCurrentUser(res);
+          closeAllPopups();
         })
         .catch((err) => {
           console.log(err);
         });
-    closeAllPopups();
   }
 
   /* Card functionality */
-  let [cards, setCards] = React.useState([]);
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     api.getCards()
@@ -95,12 +95,18 @@ export default function App() {
 
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
   function handleCardDelete(card) {
     api.deleteCard(card._id).then(() => {
       setCards((state) => state.filter((c) => c._id !== card._id));
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
@@ -108,8 +114,11 @@ export default function App() {
   function handleAddPlaceSubmit(data) {
     api.postCard(data).then((newCard) => {
       setCards([newCard, ...cards]);
+      closeAllPopups();
+    })
+    .catch((err) => {
+      console.log(err);
     });
-    closeAllPopups();
   }
 
   return (
