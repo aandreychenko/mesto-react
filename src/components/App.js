@@ -43,7 +43,7 @@ export default function App() {
   }
 
   /* User setting functionality */
-  const [currentUser, setCurrentUser] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState({});
 
   React.useEffect(() => {
     api.getUserInfo()
