@@ -161,7 +161,7 @@ export default function App() {
       auth.signing(data).then((res) => {
         setLoggedIn(true);
         localStorage.setItem('jwt', res.token);
-        history.push('/');
+        history.push('./');
     })
     .catch((err) => {
       setTooltipStatus('fail');
@@ -178,7 +178,7 @@ export default function App() {
         if (res){
           setEmail(res.data.email);
           setLoggedIn(true);
-          history.push('/');
+          history.push('./');
         } else {
           localStorage.removeItem('jwt');
         }
@@ -190,7 +190,7 @@ export default function App() {
   function handleLogout() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
-    <Redirect to="/sign-in" />
+    <Redirect to="./sign-in" />
   }
 
   return (
