@@ -201,7 +201,7 @@ export default function App() {
           <Header loggedIn={loggedIn} logOutHandler={handleLogout} email={email} />
           <Switch>
             <ProtectedRoute
-                exact path="/"
+                exact path="./"
                 loggedIn={loggedIn}
                 component={Main}
                 onEditProfile={handleEditProfileClick}
@@ -212,10 +212,10 @@ export default function App() {
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
             />
-            <Route path="/sign-up">
+            <Route path="./sign-up">
               <Register onSubmit={handleRegistration} />
             </Route>
-            <Route path="/sign-in">
+            <Route path="./sign-in">
               <Login onSubmit={handleLogin} />
             </Route>
           </Switch>
