@@ -13,7 +13,6 @@ export default function PopupWithForm(props) {
               type="submit"
               name="submit-button"
               className={`popup__submit-button popup__submit-button_${props.name} popup__button popup__button_enabled`}
-              id="popup__submit-button"
               aria-labelledby="popup__submit-button">
             {props.button}
           </button>

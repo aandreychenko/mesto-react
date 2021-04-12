@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -6,7 +7,12 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
+import Login from './Login';
+import Register from './Register';
+import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from "./ProtectedRoute";
 import api from '../utils/api';
+import auth from '../utils/auth'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 export default function App() {
@@ -39,6 +45,7 @@ export default function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsInfoToolTipOpen(false);
     setSelectedCard({});
   }
 
@@ -121,20 +128,97 @@ export default function App() {
     });
   }
 
+  /* A U T H O R I S A T I O N */
+  
+  /* Check if user logged */
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [tooltipStatus, setTooltipStatus] = React.useState('');
+  const history = useHistory();
+
+  /* Info Tooltip Popup handling */
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
+  function handleInfoTooltip() {
+    setIsInfoToolTipOpen(true);
+  }
+
+  /* Registration */
+  function handleRegistration(data) {
+      console.log(`App.js email and pw: ${data.email}, ${data.password}`);
+        auth.register(data).then(() => {
+          setTooltipStatus('success');
+          handleInfoTooltip();
+    })
+    .catch((err) => {
+      setTooltipStatus('fail');
+      handleInfoTooltip();
+      console.log(err);
+    });
+  }
+
+  /* Login */
+  function handleLogin(data) {
+      auth.signing(data).then((res) => {
+        setLoggedIn(true);
+        localStorage.setItem('jwt', res.token);
+        history.push('/');
+    })
+    .catch((err) => {
+      setTooltipStatus('fail');
+      handleInfoTooltip();
+      console.log(err);
+    });
+  }
+
+  /* Token check */
+  React.useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if(token) {
+      auth.validityCheck(token).then((res) => {
+        if (res){
+          setEmail(res.data.email);
+          setLoggedIn(true);
+          history.push('/');
+        } else {
+          localStorage.removeItem('jwt');
+        }
+      });
+    }
+  }, []);
+
+  /* Logout */
+  function handleLogout() {
+    setLoggedIn(false);
+    localStorage.removeItem('jwt');
+    <Redirect to="/sign-in" />
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
       <div className='page__content'>
         <div className="page">
-          <Header />
-          <Main
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onOpenImage={handleCardClick}
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete} />
+          <Header loggedIn={loggedIn} logOutHandler={handleLogout} email={email} />
+          <Switch>
+            <ProtectedRoute
+                exact path="/"
+                loggedIn={loggedIn}
+                component={Main}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onOpenImage={handleCardClick}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+            />
+            <Route path="/sign-up">
+              <Register onSubmit={handleRegistration} />
+            </Route>
+            <Route path="/sign-in">
+              <Login onSubmit={handleLogin} />
+            </Route>
+          </Switch>
           <Footer />
           <EditProfilePopup
               isOpen={isEditProfilePopupOpen}
@@ -153,6 +237,10 @@ export default function App() {
               onClose={closeAllPopups}
               name={selectedCard.name}
               link={selectedCard.link} />
+          <InfoTooltip
+              isOpen={isInfoToolTipOpen}
+              onClose={closeAllPopups}
+              status={tooltipStatus} />
         </div>
       </div>
     </div>
