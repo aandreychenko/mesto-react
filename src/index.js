@@ -6,7 +6,7 @@ import App from './components/App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/mesto-react">
       <App />
     </BrowserRouter>
   </React.StrictMode>,
