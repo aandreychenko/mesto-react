@@ -161,7 +161,7 @@ export default function App() {
       auth.signing(data).then((res) => {
         setLoggedIn(true);
         localStorage.setItem('jwt', res.token);
-        history.push('./');
+        history.push('/');
     })
     .catch((err) => {
       setTooltipStatus('fail');
@@ -178,7 +178,7 @@ export default function App() {
         if (res){
           setEmail(res.data.email);
           setLoggedIn(true);
-          history.push('./');
+          history.push('/');
         } else {
           localStorage.removeItem('jwt');
         }
@@ -190,7 +190,7 @@ export default function App() {
   function handleLogout() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
-    <Redirect to="./sign-in" />
+    <Redirect to="/sign-in" />
   }
 
   return (
@@ -201,7 +201,7 @@ export default function App() {
           <Header loggedIn={loggedIn} logOutHandler={handleLogout} email={email} />
           <Switch>
             <ProtectedRoute
-                exact path="./"
+                exact path="/"
                 loggedIn={loggedIn}
                 component={Main}
                 onEditProfile={handleEditProfileClick}
@@ -212,10 +212,10 @@ export default function App() {
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
             />
-            <Route path="./sign-up">
+            <Route path="/sign-up">
               <Register onSubmit={handleRegistration} />
             </Route>
-            <Route path="./sign-in">
+            <Route path="/sign-in">
               <Login onSubmit={handleLogin} />
             </Route>
           </Switch>
